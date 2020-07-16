@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpileOnly --ignore-watch node_modules --no-notify src/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn  --ignore-watch node_modules --no-notify src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -26,10 +26,12 @@
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.51",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "firebase": "^7.16.0",
+    "firebase-admin": "^9.0.0"
   }
 }
