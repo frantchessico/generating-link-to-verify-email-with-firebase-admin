@@ -132,14 +132,15 @@ const userHandlerController =  {
       ) {
       return spValidators.errorsLength(errors, res)
     }
-   const verifyBrandName = firebase.FIRESTORE.doc(`request/${brandName}`).get();
+   const brandValid =  brandName.toLowerCase().replace(/\s/g, '');
+   const verifyBrandName = firebase.FIRESTORE.doc(`request/${brandValid}`).get();
    if((await verifyBrandName).exists) {
      return res.json({inffo: 'User was taken'})
    }
-
+  
    await firebase.AUTH.createUserWithEmailAndPassword(email, password)
       .then(data => {
-     firebase.FIRESTORE.doc(`request/${brandName}`)
+     firebase.FIRESTORE.doc(`request/${brandValid}`)
      .set({
        uid: data.user.uid,
       email, 
@@ -148,11 +149,12 @@ const userHandlerController =  {
       photoURL: defaultPhotoURL,
       city,
       state,
-      brandName,
+      brandValid,
       phoneNumber,
       typeOfbusiness,
       biNumber
      }, { merge: true});
+
      const fullName = firstName + ' ' + lastName;
     
      data.user.updateProfile({
