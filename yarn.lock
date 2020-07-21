@@ -3935,6 +3935,11 @@ source-map@^0.6.0:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
+sp-validators@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/sp-validators/-/sp-validators-1.1.2.tgz#554bf54a97c9685a70fab913d8d2e0a61d2cf0eb"
+  integrity sha512-jcPzD3REQrLQz9cZDUhYXm8QP1ftcCURf4jBllWSH21f6dq9eumlV4SZ63/JG1t3mOCPp+gv/Ia0IvaKRpivTg==
+
 spdx-correct@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.1.1.tgz#dece81ac9c1e6713e5f7d1b6f17d468fa53d89a9"
