@@ -4,6 +4,7 @@ import RequestI from '../models/requestInterface'
 import defaultPhotoURL from '../utils/fakePhoto';
 
 
+let errors: any = {}
 
 const userHandlerController =  {
   async resgister(req, res){
@@ -20,7 +21,6 @@ const userHandlerController =  {
       biNumber, 
      } : RequestI = req.body;
 
-    let errors: any = {}
     
     if(!spValidators.isEmail(email)) {
          errors.email = 'Email must be valid'
@@ -57,9 +57,9 @@ const userHandlerController =  {
     }
 
     
-    if(spValidators.isPhone(phoneNumber)) {
-      errors.phoneNumber = 'Phone number must be valid';
-    }
+    // if(spValidators.isPhone(phoneNumber)) {
+    //   errors.phoneNumber = 'Phone number must be valid';
+    // }
 
     if(spValidators.isLength(phoneNumber)) {
       errors.phoneNumber = 'Phone number is too short';
@@ -133,14 +133,14 @@ const userHandlerController =  {
       return spValidators.errorsLength(errors, res)
     }
    const brandValid =  brandName.toLowerCase().replace(/\s/g, '');
-   const verifyBrandName = firebase.FIRESTORE.doc(`request/${brandValid}`).get();
+   const verifyBrandName = firebase.FIRESTORE.doc(`users/${brandValid}`).get();
    if((await verifyBrandName).exists) {
      return res.json({inffo: 'User was taken'})
    }
   
    await firebase.AUTH.createUserWithEmailAndPassword(email, password)
       .then(data => {
-     firebase.FIRESTORE.doc(`request/${brandValid}`)
+     firebase.FIRESTORE.doc(`users/${brandValid}`)
      .set({
        uid: data.user.uid,
       email, 
@@ -161,9 +161,13 @@ const userHandlerController =  {
           displayName: fullName,
           photoURL: defaultPhotoURL,
      })
-     data.user.sendEmailVerification()
+     
+     data.user.sendEmailVerification().then(()  => {
+     
+     })
      .then(() => {
-       return res.json({success: 'Please, verify your email'})
+      //  return res.json({success: 'Please, verify your email'})
+      return res.json(data)
      })
       }).catch(err => {
         if(err.code === 'auth/email-already-in-use') {
@@ -235,8 +239,61 @@ firebase.AUTH.signInWithEmailAndPassword(email, password)
      }
      
    })
+ },
+
+ async updatePhoneNumber(req, res) {
+
+  
+   const { phoneNumber } = req.body;
+   const { uid } = req.params;
+
+   if(spValidators.isLength(phoneNumber)) {
+    errors.phoneNumber = 'Brand name is too short';
+  }
+  if(spValidators.isEmpty(phoneNumber)) {
+    errors.phoneNumber = 'Brand name must not be empty';
+  }
+
+ 
+
+  if(
+    
+    errors.phoneNumber
+    ) {
+    return spValidators.errorsLength(errors, res)
+  }
+
+   firebase.admin.auth().updateUser(uid, {
+    phoneNumber: phoneNumber
+  }).then(data => {
+    return res.json(data)
+  }).catch(err => {
+    return res.json(err)
+  })
+   
+ },
+
+ updateEmail(req, res) {
+   const { email } = req.body;
+   const { uid } = req.params;
+   firebase.admin.auth().updateUser(uid, {
+     email
+   }).then(data => {
+    firebase.AUTH.currentUser.sendEmailVerification().then(() => {
+      return res.json(data)
+    }).catch(err => {
+      return res.json(err)
+    })
+   })
+ },
+ 
+ getUser(_, res) {
+  const user = firebase.AUTH.currentUser;
+  return res.json(user)
  }
 }
+
+
 
 
 
