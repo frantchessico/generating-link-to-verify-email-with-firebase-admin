@@ -1,5 +1,5 @@
 import express from 'express'
-import userHandlerController from '../controller/userHandlerController'
+import userHandlerController from '../services/userHandler.service'
 const routeGet = express.Router()
 
 

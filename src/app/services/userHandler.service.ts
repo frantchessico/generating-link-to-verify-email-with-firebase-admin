@@ -1,6 +1,8 @@
-const  spValidators = require("sp-validators");
+const spValidators = require('sp-validators');
+
 import firebase from '../config/firebase';
 import RequestI from '../models/requestInterface'
+
 import defaultPhotoURL from '../utils/fakePhoto';
 
 
@@ -286,11 +288,18 @@ firebase.AUTH.signInWithEmailAndPassword(email, password)
     })
    })
  },
+ async updateUser(req, res) {
+   const { userName } = req.params;
+   
+     firebase.FIRESTORE.doc(`users/${userName}`).update({
+
+     })
+ },
  
  getUser(_, res) {
   const user = firebase.AUTH.currentUser;
   return res.json(user)
- }
+ },
 }
 
 
