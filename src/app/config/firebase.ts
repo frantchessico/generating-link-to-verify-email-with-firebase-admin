@@ -1,34 +1,40 @@
+require('dotenv').config()
 import firebase from 'firebase';
 import admin from 'firebase-admin';
 
 
 
 
-const serviceAccount = require("./serviceAccountKey.json");
+import { serviceAccount } from './service'
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://shitadelivery.firebaseio.com"
+  databaseURL: process.env.DATABASEURL
+  
 });
 
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAszh383qHw1bVaDb51OkwYDl44Zp8D1aI',
-  authDomain: 'shitadelivery.firebaseapp.com',
-  databaseURL: 'https://shitadelivery.firebaseio.com',
-  projectId: 'shitadelivery',
-  storageBucket: 'shitadelivery.appspot.com',
-  messagingSenderId: '643179226352',
-  appId: '1:643179226352:web:79a0444e9b93d387a7ce35',
-  measurementId: 'G-HHWQ1SD42C'
+    apiKey: process.env.APIKEY,
+    authDomain: process.env.AUTHDOMAIN,
+    databaseURL: process.env.DATABASEURL,
+    projectId: process.env.PROJECTID,
+    storageBucket: process.env.STORAGEBUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.API_ID,
+    measurementId: process.env.MEASUREMENT_ID
 };
 firebase.initializeApp(firebaseConfig);
 
 
 
-export = {
-  FIRESTORE: firebase.firestore(),
-  DATABASE: firebase.database(),
-  AUTH: firebase.auth(),
-  admin
-}
+
+  export const adminAuth = admin.auth()
+  
+
+
+
+
+
+
+
